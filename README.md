@@ -2,7 +2,9 @@
 
 ## Download
 
-Download or clone this repo in a folder of your choice.
+Click on the green button **Code** on this page, and **Download ZIP**.
+
+**Unzip** in a folder of your choice. 
 
 **Unzip** the *data.zip* folder to *data/*.
 
