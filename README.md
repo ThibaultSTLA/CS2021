@@ -24,7 +24,7 @@ Activate the environment using the **conda** command:
 
 Go to the folder using de **cd** commmand:
 
-`cd c:\...\CS2021`
+`cd c:\...\CS2021-master`
 
 Use the **pip** command to install the requirements for this repo:
 
