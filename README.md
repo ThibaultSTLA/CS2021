@@ -2,7 +2,9 @@
 
 ## Download
 
-Download or clone this repo in a folder of your choice.
+Click on the green button **Code** on this page, and **Download ZIP**.
+
+**Unzip** in a folder of your choice. 
 
 **Unzip** the *data.zip* folder to *data/*.
 
@@ -22,7 +24,7 @@ Activate the environment using the **conda** command:
 
 Go to the folder using de **cd** commmand:
 
-`cd c:\...\CS2021`
+`cd c:\...\CS2021-master`
 
 Use the **pip** command to install the requirements for this repo:
 
