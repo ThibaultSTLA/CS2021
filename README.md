@@ -10,7 +10,7 @@ Click on the green button **Code** on this page, and **Download ZIP**.
 
 ## Dependencies
 
-This repo need to be run on **Python 3.7**. We strongly advise you to use a virtual environment, using an **Anaconda** or **Miniconda** prompt (*https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html*).
+This TP was created on **Python 3.8**. We strongly advise you to use a virtual environment, using an **Anaconda** or **Miniconda** prompt (*https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html*).
 
 After the installation, launch the **Anaconda prompt**.
 
