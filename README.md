@@ -1,5 +1,11 @@
 # CS2021 - Stellantis | CentralSupelec
 
+## Download
+
+Download or clone this repo in a folder of your choice.
+
+**Unzip** the *data.zip* folder to */data*.
+
 ## Dependencies
 
 This repo need to be run on **Python 3.7**. We strongly advise you to use a virtual environment, using an **Anaconda** or **Miniconda** prompt (*https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html*).
