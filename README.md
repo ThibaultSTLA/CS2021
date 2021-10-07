@@ -4,7 +4,7 @@
 
 Click on the green button **Code** on this page, and **Download ZIP**.
 
-**Unzip** in a folder of your choice. 
+**Unzip** the file in a folder of your choice and enter the *CS2021-master* folder.
 
 **Unzip** the *data.zip* folder to *data/*.
 
