@@ -14,19 +14,19 @@ This TP was created on **Python 3.8**. We strongly advise you to use a virtual e
 
 After the installation, launch the **Anaconda prompt**.
 
-Use de **conda** command to create a virtual env with the right Python version:
+Use the following **conda** command to create a virtual environment with the right Python version:
 
 `conda create -n CS2021 python=3.8`
 
-Activate the environment using the **conda** command:
+Activate the environment using the following **conda** command:
 
 `conda activate CS2021`
 
-Go to the folder using de **cd** commmand:
+Go to the folder using the following **cd** commmand:
 
 `cd c:\...\CS2021-master`
 
-Use the **pip** command to install the requirements for this repo:
+Use the following **pip** command to install the requirements for this repo:
 
 `pip install -r requirements.txt`
 
