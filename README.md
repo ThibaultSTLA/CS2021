@@ -34,6 +34,6 @@ Launch a **jupyter notebook** using the following command:
 
 `jupyter notebook`
 
-A **htlm** page should open on your browser (if not, you can copy/past the link that appears on your prompt, looking like *http://127.0.0.1:8888/?token=blabla*.
+A **htlm** page should open on your browser (if not, you can copy/past the link that appears on your prompt, looking like *http://127.0.0.1:8888/?token=blabla*).
 
 Click on **CS2021_AI4AV.ipynb**, and everything start from there...
