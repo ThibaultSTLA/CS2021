@@ -1,5 +1,5 @@
 import pygame
-from random import random
+import random
 import numpy as np  
 import math 
 
@@ -10,9 +10,10 @@ class Robot:
         self.accel = accel
 
 class Sim_TFlight:
-    def __init__(self, model=None):        
+    def __init__(self, model=None, TFL_init=None):        
 
         self.ReplayedNN = model
+        self.TFL_init = TFL_init
         self.reset()
 
     def reset(self):
@@ -65,15 +66,29 @@ class Sim_TFlight:
         self.kd = self.kv / 2
         self.Epsilon = 0.0001
 
-        self.DetectRange = self.DetectRangeInit - int(random()*30) # DetectRange between 40 and 10, average = 25m
-        self.VitesseInit = self.VitesseInit0 - int(random()*699)/100 # speed between 13m/s and 6.1m/s
-        self.TrafficLightState = int(random()*3) # 0 = Green; 1 = Amber; 2 = Red
-        self.TrafficLightState = int(min(2, self.TrafficLightState))
+        self.DetectRange = self.DetectRangeInit - int(random.random()*30) # DetectRange between 40 and 10, average = 25m
+        self.VitesseInit = self.VitesseInit0 - int(random.random()*699)/100 # speed between 13m/s and 6.1m/s
 
-        self.TrafficLightDuration[1]= 4 # in sec
-        self.TrafficLightDuration[2] = 30 + int(random()*30)  # in sec
-        self.TrafficLightDuration[0] =  self.TrafficLightDuration[2] - self.TrafficLightDuration[1] -2 # in sec
-        self.TrafficLightLastChangeTime = random()*self.TrafficLightDuration[self.TrafficLightState]
+        if self.TFL_init == "GREEN":
+            self.TrafficLightState = 0
+            self.TrafficLightDuration[0] = 50
+            self.TrafficLightDuration[1] = 4
+            self.TrafficLightDuration[2] = 30
+            self.TrafficLightLastChangeTime = 0
+        elif self.TFL_init == "RED":
+            self.TrafficLightState = 2
+            self.TrafficLightDuration[0] = 30
+            self.TrafficLightDuration[1] = 4
+            self.TrafficLightDuration[2] = 50
+            self.TrafficLightLastChangeTime = 0
+        else:
+            self.TrafficLightState = random.randint(0,2) # 0 = Green; 1 = Amber; 2 = Red
+
+            self.TrafficLightDuration[1]= 4 # in sec
+            self.TrafficLightDuration[2] = 30 + int(random.random()*30)  # in sec
+            self.TrafficLightDuration[0] =  self.TrafficLightDuration[2] - self.TrafficLightDuration[1] -2 # in sec
+        
+            self.TrafficLightLastChangeTime = random.random()*self.TrafficLightDuration[self.TrafficLightState]
 
         self.TrafficLightNextChangeTime = self.TrafficLightDuration[self.TrafficLightState] - self.TrafficLightLastChangeTime
     
