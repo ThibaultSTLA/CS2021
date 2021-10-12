@@ -2,6 +2,50 @@ import pygame
 import random
 import numpy as np  
 import math 
+from tensorflow import lite
+
+
+class LiteModel:
+    
+    @classmethod
+    def from_file(cls, model_path):
+        return LiteModel(lite.Interpreter(model_path=model_path))
+    
+    @classmethod
+    def from_keras_model(cls, kmodel):
+        converter = lite.TFLiteConverter.from_keras_model(kmodel)
+        tflite_model = converter.convert()
+        return LiteModel(lite.Interpreter(model_content=tflite_model))
+    
+    def __init__(self, interpreter):
+        self.interpreter = interpreter
+        self.interpreter.allocate_tensors()
+        input_det = self.interpreter.get_input_details()[0]
+        output_det = self.interpreter.get_output_details()[0]
+        self.input_index = input_det["index"]
+        self.output_index = output_det["index"]
+        self.input_shape = input_det["shape"]
+        self.output_shape = output_det["shape"]
+        self.input_dtype = input_det["dtype"]
+        self.output_dtype = output_det["dtype"]
+        
+    def predict(self, inp):
+        inp = inp.astype(self.input_dtype)
+        count = inp.shape[0]
+        out = np.zeros((count, self.output_shape[1]), dtype=self.output_dtype)
+        for i in range(count):
+            self.interpreter.set_tensor(self.input_index, inp[i:i+1])
+            self.interpreter.invoke()
+            out[i] = self.interpreter.get_tensor(self.output_index)[0]
+        return out
+    
+    def predict_single(self, inp):
+        """ Like predict(), but only for a single record. The input data can be a Python list. """
+        inp = np.array([inp], dtype=self.input_dtype)
+        self.interpreter.set_tensor(self.input_index, inp)
+        self.interpreter.invoke()
+        out = self.interpreter.get_tensor(self.output_index)
+        return out[0]
 
 class Robot:
     def __init__(self, posx=0, vitesse=0, accel=0):
@@ -10,12 +54,20 @@ class Robot:
         self.accel = accel
 
 class Sim_TFlight:
-    def __init__(self, model=None, TFL_init=None):        
+    def __init__(self, model=None, TFL_init=None, FAST=False):    
 
-        self.ReplayedNN = model
+        self.FAST = FAST
+        
+        if self.FAST:
+            self.ReplayedNN = LiteModel.from_keras_model(model) 
+        else: 
+            self.ReplayedNN = model
+
         self.TFL_init = TFL_init
         self.fail_count = 0
         self.reset()
+        self.BackgroundImage = pygame.image.load("data/images/ImageFond.JPG")
+        self.VehicleImage = pygame.image.load('data/images/VeryTinyCar.JPG')
 
     def reset(self):
         
@@ -25,10 +77,7 @@ class Sim_TFlight:
 
         self.Slope = -(44-618)/100
         self.OriginOffset = 618
-        self.BackgroundImage = pygame.image.load("data/images/ImageFond.JPG")
-        self.VehicleImage = pygame.image.load('data/images/VeryTinyCar.JPG')
 
-        self.VideoTimeStep = 50 # in 0.01 sec
         self.WidthPixelPosition = 0
         self.HeightPixelPosition = 0
 
@@ -196,7 +245,10 @@ class Sim_TFlight:
             self.InputNN[0,12] = self.OldIMode3
             self.InputNN[0,13] = self.OldIMode4
 
-            self.YPredictArray [0,0,:] = self.ReplayedNN(self.InputNN, training=False)
+            if self.FAST:
+                self.YPredictArray [0,0,:] = self.ReplayedNN.predict(self.InputNN)
+            else:
+                self.YPredictArray [0,0,:] = self.ReplayedNN(self.InputNN, training=False)
             self.PredictedIMode = np.argmax(self.YPredictArray [0,0,:])
 
 
