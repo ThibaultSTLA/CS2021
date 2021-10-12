@@ -14,11 +14,14 @@ class Sim_TFlight:
 
         self.ReplayedNN = model
         self.TFL_init = TFL_init
+        self.fail_count = 0
         self.reset()
 
     def reset(self):
         
         self.init = True
+
+        self.fail_on_red = False
 
         self.Slope = -(44-618)/100
         self.OriginOffset = 618
@@ -272,6 +275,16 @@ class Sim_TFlight:
         
         self.Time += self.DeltaT
 
+        if ((self.TrafficLightState ==2) and (self.avacar.posx > 0.8) and (self.avacar.posx <2) and (self.avacar.vitesse > 0.1)):
+            self.fail_on_red = True
+        
+        if self.avacar.posx > 40 or self.Time > 99:
+            if self.fail_on_red:
+                self.fail_count +=1
+            return False
+        else:
+            return True
+
     def render(self):
         if self.init:
             self.init = False
@@ -305,7 +318,7 @@ class Sim_TFlight:
 
         pygame.draw.circle(self.screen, RGBCode,TrafficLightPixelPosition, self.TrafficLightSize)
         pygame.display.flip()
-        if self.avacar.posx > 40:
+        if self.avacar.posx > 40 or self.Time > 99:
             pygame.quit()
             self.reset()
             return False
