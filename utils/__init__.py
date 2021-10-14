@@ -1,2 +1,2 @@
 from utils.Sim_TFlight import Sim_TFlight
-from utils.load_data import load_data
+from utils.utils import load_data, show_confusion_matrix
